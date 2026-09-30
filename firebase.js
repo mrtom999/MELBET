@@ -16,4 +16,5 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// Export db and other functions so other pages can use them
 export { db, collection, addDoc, getDocs, updateDoc, doc };
