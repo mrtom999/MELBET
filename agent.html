@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melbet - Advanced Agent Panel</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0f141c;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .header {
+            width: 100%;
+            background: #18222d;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+            border-bottom: 1px solid #223041;
+        }
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff0000;
+            letter-spacing: 2px;
+        }
+        .admin-badge {
+            background: #ff0000;
+            padding: 6px 12px;
+            border-radius: 5px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+        .container {
+            width: 95%;
+            max-width: 850px;
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        .section-box {
+            background: #18222d;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #223041;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        h2 {
+            margin-top: 0;
+            color: #e6c619;
+            font-size: 18px;
+            border-bottom: 1px solid #223041;
+            padding-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #223041;
+        }
+        th {
+            color: #8b9bb4;
+        }
+        .btn-approve {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-approve:hover {
+            background-color: #218838;
+        }
+        .btn-reject {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-reject:hover {
+            background-color: #cc0000;
+        }
+        .btn-action {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-action:hover {
+            background-color: #0056b3;
+        }
+        .no-data {
+            text-align: center;
+            color: #8b9bb4;
+            padding: 15px;
+        }
+        .back-link {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .back-link a {
+            color: #8b9bb4;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .back-link a:hover {
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo-text">MELBET</div>
+        <div class="admin-badge">AGENT PANEL</div>
+    </div>
+
+    <div class="container">
+        
+        <!-- ১. ইউজার লিস্ট ও ব্যালেন্স এবং পাসওয়ার্ড ম্যানেজমেন্ট সেকশন -->
+        <div class="section-box">
+            <h2>Registered Users List & Balance</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username / Phone</th>
+                        <th>Current Balance</th>
+                        <th>Action (Change Password)</th>
+                    </tr>
+                </thead>
+                <tbody id="userTableBody">
+                    <!-- జాভাস্ক্রিপ্ট দিয়ে ইউজারের তথ্য লোড হবে -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ২. ডিপোজিট রিকোয়েস্ট সেকশন -->
+        <div class="section-box">
+            <h2>Deposit Requests</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Amount</th>
+                        <th>TrxID</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="depositTableBody">
+                    <!-- జాভাস্ক্রিপ্ট দিয়ে ডাটা লোড হবে -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ৩. উইথড্র রিকোয়েস্ট সেকশন -->
+        <div class="section-box">
+            <h2>Withdraw Requests</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Account</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="withdrawTableBody">
+                    <!-- జాভাস্ক্রিপ্ট দিয়ে ডাটা লোড হবে -->
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <div class="back-link">
+        <a href="index.html">← Back to Home Dashboard</a>
+    </div>
+
+    <script>
+        function loadAgentData() {
+            // ১. ইউজার লিস্ট ও ব্যালেন্স লোড করা
+            let userTable = document.getElementById('userTableBody');
+            userTable.innerHTML = "";
+
+            let savedUser = localStorage.getItem('userPhone') || localStorage.getItem('signupUser');
+            let savedBalance = localStorage.getItem('userBalance') || "0.00";
+
+            if (!savedUser) {
+                userTable.innerHTML = `<tr><td colspan="3" class="no-data">No active user found</td></tr>`;
+            } else {
+                userTable.innerHTML = `
+                    <tr>
+                        <td><b>${savedUser}</b></td>
+                        <td style="color: #e6c619; font-weight: bold;">৳${savedBalance}</td>
+                        <td>
+                            <button class="btn-action" onclick="changeUserPassword()">Change Password</button>
+                        </td>
+                    </tr>
+                `;
+            }
+
+            // ২. ডিপোজিট রিকোয়েস্ট লোড করা
+            let deposits = JSON.parse(localStorage.getItem('depositRequests')) || [];
+            let depositTable = document.getElementById('depositTableBody');
+            depositTable.innerHTML = "";
+
+            if (deposits.length === 0) {
+                depositTable.innerHTML = `<tr><td colspan="5" class="no-data">No deposit requests found</td></tr>`;
+            } else {
+                deposits.forEach((dep, index) => {
+                    let actionButtons = dep.status === "Pending" 
+                        ? `<button class="btn-approve" onclick="approveDeposit(${index})">Approve</button> 
+                           <button class="btn-reject" onclick="rejectDeposit(${index})">Reject</button>`
+                        : `<b>${dep.status}</b>`;
+
+                    depositTable.innerHTML += `
+                        <tr>
+                            <td>${dep.method}</td>
+                            <td>৳${dep.amount}</td>
+                            <td>${dep.trxID}</td>
+                            <td>${dep.status}</td>
+                            <td>${actionButtons}</td>
+                        </tr>
+                    `;
+                });
+            }
+
+            // ৩. উইথড্র রিকোয়েস্ট লোড করা
+            let withdraws = JSON.parse(localStorage.getItem('withdrawRequests')) || [];
+            let withdrawTable = document.getElementById('withdrawTableBody');
+            withdrawTable.innerHTML = "";
+
+            if (withdraws.length === 0) {
+                withdrawTable.innerHTML = `<tr><td colspan="5" class="no-data">No withdraw requests found</td></tr>`;
+            } else {
+                withdraws.forEach((wit, index) => {
+                    let actionButtons = wit.status === "Pending" 
+                        ? `<button class="btn-approve" onclick="approveWithdraw(${index})">Approve</button> 
+                           <button class="btn-reject" onclick="rejectWithdraw(${index})">Reject</button>`
+                        : `<b>${wit.status}</b>`;
+
+                    withdrawTable.innerHTML += `
+                        <tr>
+                            <td>${wit.method}</td>
+                            <td>${wit.account}</td>
+                            <td>৳${wit.amount}</td>
+                            <td>${wit.status}</td>
+                            <td>${actionButtons}</td>
+                        </tr>
+                    `;
+                });
+            }
+        }
+
+        // এজেন্ট কর্তৃক ইউজারের পাসওয়ার্ড পরিবর্তনের ফাংশন
+        function changeUserPassword() {
+            let newPass = prompt("Enter new password for this user:");
+            if (newPass && newPass.length >= 4) {
+                localStorage.setItem('userPassword', newPass);
+                alert("User password changed successfully!");
+            } else if (newPass !== null) {
+                alert("Password must be at least 4 characters long!");
+            }
+        }
+
+        // ডিপোজিট এপ্রুভ (ব্যালেন্স যোগ হবে)
+        function approveDeposit(index) {
+            let deposits = JSON.parse(localStorage.getItem('depositRequests')) || [];
+            let currentBalance = parseFloat(localStorage.getItem('userBalance')) || 0;
+
+            let amountToAdd = parseFloat(deposits[index].amount);
+            currentBalance += amountToAdd;
+
+            localStorage.setItem('userBalance', currentBalance.toFixed(2));
+            deposits[index].status = "Approved";
+            localStorage.setItem('depositRequests', JSON.stringify(deposits));
+
+            alert("Deposit Approved! Balance added.");
+            loadAgentData();
+        }
+
+        // ডিপোজিট রিজেক্ট
+        function rejectDeposit(index) {
+            let deposits = JSON.parse(localStorage.getItem('depositRequests')) || [];
+            deposits[index].status = "Rejected";
+            localStorage.setItem('depositRequests', JSON.stringify(deposits));
+
+            alert("Deposit Request Rejected.");
+            loadAgentData();
+        }
+
+        // উইথড্র এপ্রুভ
+        function approveWithdraw(index) {
+            let withdraws = JSON.parse(localStorage.getItem('withdrawRequests')) || [];
+            withdraws[index].status = "Approved";
+            localStorage.setItem('withdrawRequests', JSON.stringify(withdraws));
+
+            alert("Withdrawal Approved!");
+            loadAgentData();
+        }
+
+        // উইথড্র রিজেক্ট (টাকা ব্যাক দেওয়া)
+        function rejectWithdraw(index) {
+            let withdraws = JSON.parse(localStorage.getItem('withdrawRequests')) || [];
+            let currentBalance = parseFloat(localStorage.getItem('userBalance')) || 0;
+
+            let refundAmount = parseFloat(withdraws[index].amount);
+            currentBalance += refundAmount;
+
+            localStorage.setItem('userBalance', currentBalance.toFixed(2));
+            withdraws[index].status = "Rejected";
+            localStorage.setItem('withdrawRequests', JSON.stringify(withdraws));
+
+            alert("Withdrawal Rejected & amount refunded.");
+            loadAgentData();
+        }
+
+        loadAgentData();
+    </script>
+
+</body>
+</html>
