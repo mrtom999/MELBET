@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melbet - Deposit</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0f141c;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .deposit-container {
+            width: 90%;
+            max-width: 400px;
+            background: #18222d;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            border: 1px solid #223041;
+        }
+        .logo-text {
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            color: #ff0000;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+        .notice {
+            background-color: #223041;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 13px;
+            color: #e6c619;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #8b9bb4;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            font-size: 15px;
+            border: 1px solid #223041;
+            border-radius: 5px;
+            background: #223041;
+            color: white;
+            outline: none;
+            box-sizing: border-box;
+        }
+        input:focus, select:focus {
+            border-color: #ff0000;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .submit-btn:hover {
+            background-color: #218838;
+        }
+        .back-link {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        .back-link a {
+            color: #8b9bb4;
+            text-decoration: none;
+        }
+        .back-link a:hover {
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="deposit-container">
+        <div class="logo-text">MELBET</div>
+        <div class="notice">
+            Bkash / Nagad / Rocket Personal No: <strong>01700000000</strong><br>টাকা পাঠিয়ে নিচের ফর্মটি পূরণ করুন।
+        </div>
+        
+        <form onsubmit="handleDeposit(event)">
+            <div class="form-group">
+                <label>Payment Method</label>
+                <select id="depositMethod" required>
+                    <option value="Bkash">Bkash</option>
+                    <option value="Nagad">Nagad</option>
+                    <option value="Rocket">Rocket</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Amount (BDT)</label>
+                <input type="number" id="depositAmount" placeholder="Enter amount" min="100" required>
+            </div>
+
+            <div class="form-group">
+                <label>Transaction ID (TrxID)</label>
+                <input type="text" id="depositTrx" placeholder="Enter TrxID" required>
+            </div>
+
+            <button type="submit" class="submit-btn">SUBMIT DEPOSIT</button>
+        </form>
+
+        <div class="back-link">
+            <a href="index.html">← Back to Home</a>
+        </div>
+    </div>
+
+    <script>
+        function handleDeposit(event) {
+            event.preventDefault();
+            
+            let method = document.getElementById('depositMethod').value;
+            let amount = document.getElementById('depositAmount').value;
+            let trxID = document.getElementById('depositTrx').value;
+
+            // ডিপোজিট ডেটা যেখানে মাধ্যম (Bkash/Nagad/Rocket) সহ সেভ হবে
+            let depositData = {
+                method: method,
+                amount: amount,
+                trxID: trxID,
+                status: "Pending", // প্রাথমিক স্ট্যাটাস পেন্ডিং থাকবে
+                date: new Date().toLocaleString()
+            };
+
+            let existingRequests = JSON.parse(localStorage.getItem('depositRequests')) || [];
+            existingRequests.push(depositData);
+            localStorage.setItem('depositRequests', JSON.stringify(existingRequests));
+
+            alert("Deposit Request Submitted Successfully! Waiting for Agent approval.");
+            window.location.href = "index.html";
+        }
+    </script>
+
+</body>
+</html>
