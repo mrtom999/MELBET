@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melbet - User Profile & History</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0f141c;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .header {
+            width: 100%;
+            background: #18222d;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+            border-bottom: 1px solid #223041;
+        }
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff0000;
+            letter-spacing: 2px;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .card {
+            background: #18222d;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #223041;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        h2 {
+            margin-top: 0;
+            color: #e6c619;
+            font-size: 18px;
+            border-bottom: 1px solid #223041;
+            padding-bottom: 10px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-bottom: 12px;
+        }
+        label {
+            font-size: 14px;
+            color: #8b9bb4;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            font-size: 14px;
+            border: 1px solid #223041;
+            border-radius: 5px;
+            background: #223041;
+            color: white;
+            outline: none;
+            box-sizing: border-box;
+        }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #cc0000;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #223041;
+        }
+        th {
+            color: #8b9bb4;
+        }
+        .no-data {
+            text-align: center;
+            color: #8b9bb4;
+            padding: 15px;
+        }
+        .back-link {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .back-link a {
+            color: #8b9bb4;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .back-link a:hover {
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo-text">MELBET</div>
+        <div style="font-size: 14px; color: #8b9bb4;">My Profile</div>
+    </div>
+
+    <div class="container">
+        
+        <!-- ১. বাজি ধরার ইতিহাস (Betting History) -->
+        <div class="card">
+            <h2>My Betting History</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Game</th>
+                        <th>Bet Amount</th>
+                        <th>Result / Status</th>
+                    </tr>
+                </thead>
+                <tbody id="betHistoryBody">
+                    <!-- జాভাস্ক্রিপ্ট দিয়ে ডাটা লোড হবে -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ২. পাসওয়ার্ড পরিবর্তনের ফর্ম -->
+        <div class="card">
+            <h2>Change Password</h2>
+            <div class="form-group">
+                <label>New Password</label>
+                <input type="password" id="newPassword" placeholder="Enter new password">
+            </div>
+            <button class="btn" onclick="changePassword()">Update Password</button>
+        </div>
+
+        <div class="back-link">
+            <a href="index.html">← Back to Home Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+        // বেটিং হিস্টরি লোড করার ফাংশন (লোক্যাল স্টোরেজ থেকে)
+        function loadBetHistory() {
+            let history = JSON.parse(localStorage.getItem('betHistory')) || [];
+            let tbody = document.getElementById('betHistoryBody');
+            tbody.innerHTML = "";
+
+            if (history.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" class="no-data">No bets placed yet</td></tr>`;
+            } else {
+                history.reverse().forEach(bet => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${bet.game}</td>
+                            <td>৳${bet.amount}</td>
+                            <td style="color: ${bet.status.includes('Won') ? '#28a745' : '#ff4d4d'}">${bet.status}</td>
+                        </tr>
+                    `;
+                });
+            }
+        }
+
+        // পাসওয়ার্ড পরিবর্তনের ফাংশন
+        function changePassword() {
+            let newPass = document.getElementById('newPassword').value;
+            if (!newPass || newPass.length < 4) {
+                alert("Please enter a valid password (at least 4 characters)!");
+                return;
+            }
+
+            localStorage.setItem('userPassword', newPass);
+            alert("Password updated successfully!");
+            document.getElementById('newPassword').value = "";
+        }
+
+        loadBetHistory();
+    </script>
+
+</body>
+</html>
