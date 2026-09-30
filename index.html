@@ -105,8 +105,9 @@
             background-color: #cc0000;
         }
         .logout-section {
-            margin-top: 30px;
+            margin-top: 20px;
             text-align: center;
+            margin-bottom: 30px;
         }
         .logout-btn {
             color: #8b9bb4;
@@ -120,7 +121,7 @@
 </head>
 <body>
 
-    <!-- টপ হেডার (লোগো এবং ব্যালেন্স) -->
+    <!-- টপ হেডার -->
     <div class="header">
         <div class="logo-text">MELBET</div>
         <div class="balance-box">Balance: ৳ <span id="userBalance">0.00</span></div>
@@ -134,15 +135,24 @@
             <a href="withdraw.html" class="action-btn withdraw-btn">- Withdraw</a>
         </div>
 
-        <!-- গেমের তালিকা সেকশন -->
         <h3 style="color: #8b9bb4; margin-top: 10px; margin-bottom: 5px;">Popular Games</h3>
         
+        <!-- Aviator Game Card -->
         <div class="game-card">
             <div class="game-info">
                 <h3>✈️ Aviator Game</h3>
-                <p>Fly high and win big!</p>
+                <p>Fly high and win big multipliers!</p>
             </div>
             <a href="aviator.html" class="play-btn">PLAY</a>
+        </div>
+
+        <!-- 7 Up 7 Down Game Card (Updated Link) -->
+        <div class="game-card">
+            <div class="game-info">
+                <h3>🎲 7 Up 7 Down</h3>
+                <p>Roll dice and test your luck!</p>
+            </div>
+            <a href="7updown.html" class="play-btn">PLAY</a>
         </div>
 
         <!-- লগআউট অপশন -->
@@ -153,8 +163,7 @@
     </div>
 
     <script>
-        // লোকাল স্টোরেজ থেকে ইউজারের ব্যালেন্স বা আপডেট দেখানোর কোড
-        // (পরে ফায়ারবেজ কানেক্ট করলে এটি রিয়েল-টাইম ডাটা দেখাবে)
+        // ইউজারের লোকাল ব্যালেন্স লোড করা
         let savedBalance = localStorage.getItem('userBalance');
         if (savedBalance) {
             document.getElementById('userBalance').innerText = savedBalance;
