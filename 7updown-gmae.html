@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melbet - 7 Up 7 Down Gameplay</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0f141c;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .header {
+            width: 100%;
+            background: #18222d;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+            border-bottom: 1px solid #223041;
+        }
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff0000;
+            letter-spacing: 2px;
+        }
+        .balance-box {
+            background: #223041;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #e6c619;
+            font-weight: bold;
+        }
+        .game-container {
+            width: 90%;
+            max-width: 400px;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .dice-stage {
+            width: 100%;
+            height: 180px;
+            background: radial-gradient(circle, #1a2c38 0%, #0f141c 100%);
+            border-radius: 12px;
+            border: 1px solid #223041;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        .dice {
+            width: 60px;
+            height: 60px;
+            background: #ffffff;
+            color: #000000;
+            font-size: 30px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .result-display {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #e6c619;
+            min-height: 25px;
+        }
+        .control-panel {
+            background: #18222d;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #223041;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        label {
+            font-size: 14px;
+            color: #8b9bb4;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #223041;
+            border-radius: 5px;
+            background: #223041;
+            color: white;
+            outline: none;
+            box-sizing: border-box;
+        }
+        input:focus {
+            border-color: #ff0000;
+        }
+        .bet-options {
+            display: flex;
+            gap: 10px;
+        }
+        .choice-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #223041;
+            background: #223041;
+            color: white;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .choice-btn.selected {
+            border-color: #ff0000;
+            background: #2a1215;
+            color: #ff4d4d;
+        }
+        .play-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+        .play-btn:hover {
+            background-color: #218838;
+        }
+        .back-link {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .back-link a {
+            color: #8b9bb4;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .back-link a:hover {
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo-text">MELBET</div>
+        <div class="balance-box">Balance: ৳ <span id="userBalance">0.00</span></div>
+    </div>
+
+    <div class="game-container">
+        
+        <div class="dice-stage">
+            <div id="dice1" class="dice">⚀</div>
+            <div id="dice2" class="dice">⚀</div>
+        </div>
+
+        <div id="resultText" class="result-display">Select your option and roll!</div>
+
+        <div class="control-panel">
+            <div class="form-group">
+                <label>Bet Amount (BDT)</label>
+                <input type="number" id="betAmount" placeholder="Enter amount" min="10" value="100">
+            </div>
+
+            <div class="form-group">
+                <label>Select Outcome</label>
+                <div class="bet-options">
+                    <button type="button" class="choice-btn" onclick="selectChoice('down')" id="btnDown">2 - 6 (Down)</button>
+                    <button type="button" class="choice-btn" onclick="selectChoice('seven')" id="btnSeven" style="flex:0.8;">7 (Lucky)</button>
+                    <button type="button" class="choice-btn" onclick="selectChoice('up')" id="btnUp">8 - 12 (Up)</button>
+                </div>
+            </div>
+
+            <button class="play-btn" onclick="playGame()">ROLL DICE</button>
+        </div>
+
+        <div class="back-link">
+            <a href="7updown.html">← Back to Lobby</a>
+        </div>
+    </div>
+
+    <script>
+        let balance = parseFloat(localStorage.getItem('userBalance')) || 0;
+        document.getElementById('userBalance').innerText = balance.toFixed(2);
+
+        let selectedChoice = '';
+
+        function updateBalanceUI() {
+            document.getElementById('userBalance').innerText = balance.toFixed(2);
+            localStorage.setItem('userBalance', balance.toFixed(2));
+        }
+
+        function selectChoice(choice) {
+            selectedChoice = choice;
+            document.getElementById('btnDown').classList.remove('selected');
+            document.getElementById('btnSeven').classList.remove('selected');
+            document.getElementById('btnUp').classList.remove('selected');
+
+            if (choice === 'down') document.getElementById('btnDown').classList.add('selected');
+            if (choice === 'seven') document.getElementById('btnSeven').classList.add('selected');
+            if (choice === 'up') document.getElementById('btnUp').classList.add('selected');
+        }
+
+        function playGame() {
+            let amount = parseFloat(document.getElementById('betAmount').value);
+
+            if (isNaN(amount) || amount <= 0) {
+                alert("Please enter a valid bet amount!");
+                return;
+            }
+
+            if (!selectedChoice) {
+                alert("Please select Down, 7, or Up first!");
+                return;
+            }
+
+            if (amount > balance) {
+                alert("Insufficient balance! Please deposit first.");
+                return;
+            }
+
+            balance -= amount;
+            updateBalanceUI();
+
+            document.getElementById('resultText').innerText = "Rolling dices...";
+
+            setTimeout(() => {
+                let d1 = Math.floor(Math.random() * 6) + 1;
+                let d2 = Math.floor(Math.random() * 6) + 1;
+                let totalSum = d1 + d2;
+
+                document.getElementById('dice1').innerText = d1;
+                document.getElementById('dice2').innerText = d2;
+
+                let outcome = '';
+                if (totalSum < 7) outcome = 'down';
+                else if (totalSum === 7) outcome = 'seven';
+                else outcome = 'up';
+
+                if (selectedChoice === outcome) {
+                    let winMultiplier = (outcome === 'seven') ? 5 : 2;
+                    let winnings = amount * winMultiplier;
+                    balance += winnings;
+                    updateBalanceUI();
+                    document.getElementById('resultText').innerText = `Total: ${totalSum} (${outcome.toUpperCase()}) - You Won ৳${winnings}!`;
+                    document.getElementById('resultText').style.color = "#28a745";
+                } else {
+                    document.getElementById('resultText').innerText = `Total: ${totalSum} (${outcome.toUpperCase()}) - You Lost!`;
+                    document.getElementById('resultText').style.color = "#ff4d4d";
+                }
+            }, 800);
+        }
+    </script>
+
+</body>
+</html>
