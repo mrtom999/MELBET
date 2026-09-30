@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melbet - Login</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0f141c;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-container {
+            width: 90%;
+            max-width: 400px;
+            background: #18222d;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            border: 1px solid #223041;
+        }
+        .logo-text {
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            color: #ff0000;
+            margin-bottom: 25px;
+            letter-spacing: 2px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #8b9bb4;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            font-size: 15px;
+            border: 1px solid #223041;
+            border-radius: 5px;
+            background: #223041;
+            color: white;
+            outline: none;
+            box-sizing: border-box;
+        }
+        input:focus {
+            border-color: #ff0000;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .submit-btn:hover {
+            background-color: #cc0000;
+        }
+        .error-msg {
+            color: #ff4d4d;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        .signup-link {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #8b9bb4;
+        }
+        .signup-link a {
+            color: #e6c619;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="logo-text">MELBET</div>
+        
+        <form onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label>Email / Mobile Number</label>
+                <input type="text" id="loginUser" placeholder="Enter your email or phone" required>
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="loginPassword" placeholder="Enter your password" required>
+            </div>
+
+            <button type="submit" class="submit-btn">LOGIN</button>
+            
+            <div id="errorText" class="error-msg"></div>
+        </form>
+
+        <div class="signup-link">
+            Don't have an account? <a href="signup.html">Sign up here</a>
+        </div>
+    </div>
+
+    <script>
+        function handleLogin(event) {
+            event.preventDefault();
+
+            let userInput = document.getElementById('loginUser').value;
+            let password = document.getElementById('loginPassword').value;
+            let errorText = document.getElementById('errorText');
+
+            // লোকাল স্টোরেজ বা সাইনআপ করা ডেটার সাথে মেলানোর ব্যবস্থা
+            let savedUser = JSON.parse(localStorage.getItem('registeredUser'));
+
+            // এখানে ডেমো চেক অথবা সাইনআপ করা ডেটা মেলানো হবে
+            if (savedUser && (savedUser.email === userInput || savedUser.phone === userInput) && savedUser.password === password) {
+                alert("Login Successful!");
+                window.location.href = "index.html"; // সফল হলে হোম পেজে যাবে
+            } else {
+                // আপনার নির্দিষ্ট করা ওয়ার্নিং মেসেজ
+                errorText.innerText = "দয়া করে সঠিক পাসওয়ার্ড দিন";
+            }
+        }
+    </script>
+
+</body>
+</html>
